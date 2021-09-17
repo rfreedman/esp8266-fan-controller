@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "NTPTime.h"
-
+#include <Timezone.h>
 
 /**
  * Input time in epoch format and return tm time format
@@ -36,6 +36,10 @@ String NTPTime::getCurrentDateTimeFormatted() {
   // US Eastern Timezone
   TimeChangeRule usEDT = {"EDT", Second, Sun, Mar, 2, -240};  // Eastern Daylight Time = UTC - 4 hours
   TimeChangeRule usEST = {"EST", First, Sun, Nov, 2, -300};   // Eastern Standard Time = UTC - 5 hours
-  Timezone usET(usEDT, usEST);
-  return getEpochStringByParams(usET.toLocal(now()), (const char *) "%Y/%m/%d %H:%M:%S");
+  // Timezone usET = Timezone(usEDT, usEST);
+  // return getEpochStringByParams(usET.toLocal(now()), (const char *) "%Y/%m/%d %H:%M:%S");
+  return getEpochStringByParams(
+      Timezone(usEDT, usEST).toLocal(now()),
+      (const char *) "%Y/%m/%d %H:%M:%S"
+  );
 }
